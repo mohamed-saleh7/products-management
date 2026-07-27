@@ -1,25 +1,4 @@
-let products = [
-    {
-        id: 1,
-        name: "Phone",
-        price: 500,
-        image: "assets/images/phone.jpg"
-    },
-
-    {
-        id: 2,
-        name: "Laptop",
-        price: 1200,
-        image: "assets/images/laptop.jpg"
-    },
-
-    {
-        id: 3,
-        name: "Watch",
-        price: 500,
-        image: "assets/images/watch.jpg"
-    }
-];
+let products = [];
 
 
 
@@ -47,7 +26,7 @@ const image = document.getElementById("productImage").value;
 const product = {
     id: Date.now(),
     name: name,
-    price: price,
+    price: Number(price),
     image: image
 };
 
@@ -82,10 +61,21 @@ document.getElementById("productForm").reset();
 // 6- Display cards inside container
 
 
-function displayProducts(productsToDisplay = products) {
+function displayProducts(productsToDisplay) {
 
 const container = document.getElementById("productsContainer");
-container.innerHTML = "";  
+container.replaceChildren();
+
+if (productsToDisplay.length === 0) {
+
+const message = document.createElement("div");
+message.className = "empty-message";
+message.textContent = "No products found.";
+container.appendChild(message);
+return;
+
+}
+
 for (let product of productsToDisplay) {
 
 const card = document.createElement("div");
