@@ -1,4 +1,25 @@
-let products = [];
+let products = [
+    {
+        id: 1,
+        name: "Phone",
+        price: 500,
+        image: "assets/images/phone.jpg"
+    },
+
+    {
+        id: 2,
+        name: "Laptop",
+        price: 1200,
+        image: "assets/images/laptop.jpg"
+    },
+
+    {
+        id: 3,
+        name: "Watch",
+        price: 500,
+        image: "assets/images/watch.jpg"
+    }
+];
 
 
 
@@ -20,10 +41,19 @@ let products = [];
 
 function addProduct() {
 
+const name = document.getElementById("productName").value;
+const price = document.getElementById("productPrice").value;
+const image = document.getElementById("productImage").value;
+const product = {
+    id: Date.now(),
+    name: name,
+    price: price,
+    image: image
+};
 
-    // TODO
-
-
+products.push(product);
+displayProducts(products);
+document.getElementById("productForm").reset();
 
 }
 
@@ -52,11 +82,47 @@ function addProduct() {
 // 6- Display cards inside container
 
 
-function displayProducts() {
+function displayProducts(productsToDisplay = products) {
 
+const container = document.getElementById("productsContainer");
+container.innerHTML = "";  
+for (let product of productsToDisplay) {
 
-    // TODO
+const card = document.createElement("div");
+card.className = "col-md-4";
 
+const productCard = document.createElement("div");
+productCard.className = "product-card";
+
+const productInfo = document.createElement("div");
+productInfo.className = "product-info";
+
+const img = document.createElement("img");
+img.src = product.image;
+productCard.appendChild(img);
+
+const name = document.createElement("h3");
+name.className = "product-name";
+name.textContent = product.name;
+productInfo.appendChild(name);
+
+const price = document.createElement("p");
+price.className = "product-price";
+price.textContent = "$" + product.price;
+productInfo.appendChild(price)
+
+const deleteBtn = document.createElement("button");
+deleteBtn.className = "btn btn-danger delete-btn";
+deleteBtn.textContent = "Delete";
+productInfo.appendChild(deleteBtn);
+deleteBtn.onclick = function () {
+deleteProduct(product.id);
+};
+
+productCard.appendChild(productInfo);
+card.appendChild(productCard);
+container.appendChild(card);
+}
 
 
 }
@@ -78,10 +144,11 @@ function displayProducts() {
 
 function deleteProduct(id) {
 
+products = products.filter(function (product) {
+    return product.id !== id;
+});
 
-    // TODO
-
-
+displayProducts(products);
 
 }
 
@@ -103,9 +170,11 @@ function deleteProduct(id) {
 
 function searchProducts() {
 
+const searchValue = document.getElementById("searchInput").value;
 
-    // TODO
-
-
+const filteredProducts = products.filter(function (product) {
+    return product.name.toLowerCase().includes(searchValue.toLowerCase());
+});
+displayProducts(filteredProducts);
 
 }
