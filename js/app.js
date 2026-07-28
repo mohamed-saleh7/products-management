@@ -19,9 +19,23 @@ let products = [];
 
 
 function addProduct() {
+    let name=document.getElementById("productName").value;
+    let price=Number(document.getElementById("productPrice").value);
+    let image= document.getElementById("productImage").value;
 
+    let product={
+        name:name,
+        price:price,
+        image:image,
+        id:products.length+1
+    }
+    products.push(product);
 
-    // TODO
+    displayProducts();
+
+    document.getElementById("productForm").reset();
+ 
+
 
 
 
@@ -53,9 +67,30 @@ function addProduct() {
 
 
 function displayProducts() {
+let container=document.getElementById("productsContainer");
+container.innerHTML="";
+
+for(let i=0;i<products.length;i++){
+let card=document.createElement("div");
+let image=document.createElement("img");
+let name= document.createElement("h5");
+let price =document.createElement("p");
+let button= document.createElement("button");
+image.src=products[i].image;
+image.alt=products[i].name;
+name.textContent=products[i].name
+price.textContent=products[i].price
+button.textContent="Delete"
+button.addEventListener("click", function () {
+    deleteProduct(products[i].id);
+});
+card.append(image, name, price, button);
+container.append(card);
+card.className = "col-md-4";
+button.className = "btn btn-danger";
+}
 
 
-    // TODO
 
 
 
@@ -77,7 +112,12 @@ function displayProducts() {
 
 
 function deleteProduct(id) {
-
+    products=products.filter(product =>{
+        return product.id!==id;
+    })
+        
+    
+    displayProducts();
 
     // TODO
 
@@ -103,9 +143,23 @@ function deleteProduct(id) {
 
 function searchProducts() {
 
+    let searchVal = document.getElementById("searchInput").value;
 
-    // TODO
+    searchVal = searchVal.toLowerCase();
 
 
+    let filteredProducts = products.filter(product => {
 
+        return product.name.toLowerCase().includes(searchVal);
+
+    });
+
+
+    let oldProducts = products;
+
+    products = filteredProducts;
+
+    displayProducts();
+
+    products = oldProducts;
 }
