@@ -1,11 +1,6 @@
 let products = [];
 
 
-
-
-
-
-
 // Add Product
 //
 // Steps:
@@ -17,19 +12,45 @@ let products = [];
 // 6- Call displayProducts()
 // 7- Reset the form
 
-
 function addProduct() {
 
+    // 1
+    const productName = document.getElementById("productName").value.trim();
 
-    // TODO
+    // 2
+    const productPrice = document.getElementById("productPrice").value;
 
+    // 3
+    const productImage = document.getElementById("productImage").value;
 
+        if (productName === "") {
+        alert("Please enter a product name.");
+        return;
+    }
+
+    if (/^\d+$/.test(productName)) {
+        alert("Product name cannot be only numbers.");
+        return;
+    }
+    
+    // 4
+    const product = {
+        id: products.length + 1,
+        name: productName,
+        price: productPrice,
+        image: productImage
+    };
+
+    // 5
+    products.push(product);
+
+    // 6
+    displayProducts();
+
+    // 7
+    document.getElementById("productForm").reset();
 
 }
-
-
-
-
 
 
 
@@ -51,19 +72,62 @@ function addProduct() {
 //      delete button
 // 6- Display cards inside container
 
+function displayProducts(productsList = products) {
 
-function displayProducts() {
+    // 1
+    const productsContainer = document.getElementById("productsContainer");
 
+    // 2
+    productsContainer.innerHTML = "";
 
-    // TODO
+    // 3
+    productsList.forEach(function (product) {
 
+        // 4
+        const col = document.createElement("div");
+        col.className = "col-md-4";
 
+        const card = document.createElement("div");
+        card.className = "product-card";
+
+        const image = document.createElement("img");
+        image.src = product.image;
+
+        const info = document.createElement("div");
+        info.className = "product-info";
+
+        const name = document.createElement("h3");
+        name.className = "product-name";
+        name.textContent = product.name;
+
+        const price = document.createElement("p");
+        price.className = "product-price";
+        price.textContent = product.price;
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "btn btn-danger delete-btn";
+        deleteButton.textContent = "Delete";
+
+        deleteButton.addEventListener("click", function () {
+            deleteProduct(product.id);
+        });
+
+        // 5
+        info.appendChild(name);
+        info.appendChild(price);
+        info.appendChild(deleteButton);
+
+        card.appendChild(image);
+        card.appendChild(info);
+
+        col.appendChild(card);
+
+        // 6
+        productsContainer.appendChild(col);
+
+    });
 
 }
-
-
-
-
 
 
 
@@ -75,19 +139,17 @@ function displayProducts() {
 // 2- Remove product from products array
 // 3- Call displayProducts()
 
-
 function deleteProduct(id) {
 
+    // 2
+    products = products.filter(function (product) {
+        return product.id !== id;
+    });
 
-    // TODO
-
-
+    // 3
+    displayProducts();
 
 }
-
-
-
-
 
 
 
@@ -100,12 +162,20 @@ function deleteProduct(id) {
 // 3- Filter products by name
 // 4- Call displayProducts() with results
 
-
 function searchProducts() {
 
+    // 1
+    const searchValue = document.getElementById("searchInput").value;
 
-    // TODO
+    // 2
+    const lowerCaseValue = searchValue.toLowerCase();
 
+    // 3
+    const filteredProducts = products.filter(function (product) {
+        return product.name.toLowerCase().includes(lowerCaseValue);
+    });
 
+    // 4
+    displayProducts(filteredProducts);
 
 }
