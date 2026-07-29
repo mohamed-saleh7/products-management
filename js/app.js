@@ -4,24 +4,56 @@ let products = [];
 
 
 
-
-
 // Add Product
-//
-// Steps:
-// 1- Get product name from input
-// 2- Get product price from input
-// 3- Get product image from select
-// 4- Create product object
-// 5- Add object to products array
-// 6- Call displayProducts()
-// 7- Reset the form
-
 
 function addProduct() {
 
 
-    // TODO
+
+    const name =
+        document.getElementById("productName").value;
+
+
+
+    const price =
+        document.getElementById("productPrice").value;
+
+
+
+    const image =
+        document.getElementById("productImage").value;
+
+
+
+
+
+    const product = {
+
+
+        id: Date.now(),
+
+        name: name,
+
+        price: Number(price),
+
+        image: image
+
+
+    };
+
+
+
+
+
+    products.push(product);
+
+
+
+    displayProducts();
+
+
+
+    document.getElementById("productForm").reset();
 
 
 
@@ -35,27 +67,223 @@ function addProduct() {
 
 
 // Display Products
-//
-// Steps:
-// 1- Select productsContainer
-// 2- Remove old products
-// 3- Loop through products array
-// 4- Create card elements using:
-//      createElement()
-//      textContent
-//      appendChild()
-// 5- Add:
-//      image
-//      product name
-//      product price
-//      delete button
-// 6- Display cards inside container
+
+function displayProducts(list = products) {
 
 
-function displayProducts() {
+
+    const container =
+        document.getElementById("productsContainer");
 
 
-    // TODO
+
+    // remove old cards
+
+    container.replaceChildren();
+
+
+
+
+
+    if (list.length === 0) {
+
+
+        const message =
+            document.createElement("div");
+
+
+        message.className =
+            "empty-message";
+
+
+        message.textContent =
+            "No Products Found";
+
+
+
+        container.appendChild(message);
+
+
+
+        return;
+
+
+    }
+
+
+
+
+
+
+
+
+    list.forEach(product => {
+
+
+
+        // column
+
+        const col =
+            document.createElement("div");
+
+
+        col.className =
+            "col-md-4";
+
+
+
+
+
+
+
+        // card
+
+        const card =
+            document.createElement("div");
+
+
+        card.className =
+            "product-card";
+
+
+
+
+
+
+
+
+        // image
+
+        const img =
+            document.createElement("img");
+
+
+        img.src =
+            product.image;
+
+
+        img.alt =
+            product.name;
+
+
+
+
+
+
+
+
+        // info container
+
+        const info =
+            document.createElement("div");
+
+
+        info.className =
+            "product-info";
+
+
+
+
+
+
+
+
+        // name
+
+        const title =
+            document.createElement("h3");
+
+
+        title.className =
+            "product-name";
+
+
+        title.textContent =
+            product.name;
+
+
+
+
+
+
+
+
+        // price
+
+        const price =
+            document.createElement("p");
+
+
+        price.className =
+            "product-price";
+
+
+        price.textContent =
+            product.price + " $";
+
+
+
+
+
+
+
+
+        // delete button
+
+        const deleteBtn =
+            document.createElement("button");
+
+
+        deleteBtn.className =
+            "btn btn-danger delete-btn";
+
+
+        deleteBtn.textContent =
+            "Delete";
+
+
+
+        deleteBtn.addEventListener("click", function () {
+
+
+            deleteProduct(product.id);
+
+
+        });
+
+
+
+
+
+
+
+
+        // Build card
+
+
+        info.appendChild(title);
+
+        info.appendChild(price);
+
+        info.appendChild(deleteBtn);
+
+
+
+        card.appendChild(img);
+
+        card.appendChild(info);
+
+
+
+        col.appendChild(card);
+
+
+
+        container.appendChild(col);
+
+
+
+    });
 
 
 
@@ -69,17 +297,23 @@ function displayProducts() {
 
 
 // Delete Product
-//
-// Steps:
-// 1- Receive product id
-// 2- Remove product from products array
-// 3- Call displayProducts()
-
 
 function deleteProduct(id) {
 
 
-    // TODO
+
+    products =
+        products.filter(product => {
+
+
+            return product.id !== id;
+
+
+        });
+
+
+
+    displayProducts();
 
 
 
@@ -93,18 +327,39 @@ function deleteProduct(id) {
 
 
 // Search Products
-//
-// Steps:
-// 1- Get search input value
-// 2- Convert value to lowercase
-// 3- Filter products by name
-// 4- Call displayProducts() with results
-
 
 function searchProducts() {
 
 
-    // TODO
+
+    const value =
+        document
+            .getElementById("searchInput")
+            .value
+            .toLowerCase();
+
+
+
+
+
+    const filteredProducts =
+        products.filter(product => {
+
+
+
+            return product.name
+                .toLowerCase()
+                .includes(value);
+
+
+
+        });
+
+
+
+
+
+    displayProducts(filteredProducts);
 
 
 
